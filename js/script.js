@@ -1,3 +1,4 @@
+// --- Calculadora general ---
 document.getElementById("btnCalcular").addEventListener("click", calcular);
 document.getElementById("btnReset").addEventListener("click", resetear);
 
@@ -36,7 +37,7 @@ function calcular() {
   `;
 }
 
-// Redondea al múltiplo más cercano de 100
+// --- Función de redondeo ---
 function redondear(valor) {
     return Math.round(valor / 100) * 100;
 }
@@ -102,20 +103,24 @@ function calcularUnidad() {
     const ganancia = parseFloat(document.getElementById("gananciaUnidad").value);
     const redondeo = document.getElementById("redondeoUnidad").checked;
 
-    if (isNaN(precio) || isNaN(cantidad) || isNaN(ganancia)) {
-        alert("Por favor, completa todos los campos.");
+    if (isNaN(precio) || isNaN(cantidad) || isNaN(ganancia) || cantidad <= 0) {
+        alert("Por favor, completa todos los campos correctamente (cantidad debe ser mayor que 0).");
         return;
     }
 
+    // Cálculo base
     const costoUnidad = precio / cantidad;
-    const precioSinIVA = costoUnidad * (1 + ganancia / 100);
-    const precioConIVA = precioSinIVA * (1 + iva / 100);
+    let precioSinIVA = costoUnidad * (1 + ganancia / 100);
+    let precioConIVA = precioSinIVA * (1 + iva / 100);
 
-    const finalSinIVA = redondeo ? redondear(precioSinIVA) : precioSinIVA;
-    const finalConIVA = redondeo ? redondear(precioConIVA) : precioConIVA;
+    // Aplicar redondeo si está activado
+    if (redondeo) {
+        precioSinIVA = redondear(precioSinIVA);
+        precioConIVA = redondear(precioConIVA);
+    }
 
-    const resultadoSinIVA = `₡${finalSinIVA.toFixed(2)}`;
-    const resultadoConIVA = `₡${finalConIVA.toFixed(2)}`;
+    const resultadoSinIVA = `₡${precioSinIVA.toFixed(2)}`;
+    const resultadoConIVA = `₡${precioConIVA.toFixed(2)}`;
 
     const resultBox = document.getElementById("resultadoUnidad");
     resultBox.innerHTML = `
