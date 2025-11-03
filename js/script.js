@@ -5,22 +5,62 @@ function calcular() {
     const precio = parseFloat(document.getElementById("precio").value);
     const iva = parseFloat(document.getElementById("iva").value);
     const ganancia = parseFloat(document.getElementById("ganancia").value);
+    const redondeo = document.getElementById("redondeo").checked;
 
     if (isNaN(precio) || isNaN(ganancia)) {
         alert("Por favor, completa todos los campos numéricos.");
         return;
     }
 
-    // (A2*(1+C2/100))*(1+B2/100)
-    const precioVenta = (precio * (1 + iva / 100)) * (1 + ganancia / 100);
+    // Precio base
+    const precioSinIVA = precio * (1 + ganancia / 100);
+    const precioConIVA = precioSinIVA * (1 + iva / 100);
 
-    document.getElementById("resultado").innerHTML =
-        `💰 Precio de venta sin IVA: ₡${precioVenta.toFixed(2)}`;
+    // Aplicar redondeo si está activo
+    const precioSinIVARed = redondeo ? redondear(precioSinIVA) : precioSinIVA;
+    const precioConIVARed = redondeo ? redondear(precioConIVA) : precioConIVA;
+
+    const resultadoSinIVA = `₡${precioSinIVARed.toFixed(2)}`;
+    const resultadoConIVA = `₡${precioConIVARed.toFixed(2)}`;
+
+    const resultBox = document.getElementById("resultado");
+    resultBox.innerHTML = `
+    <div class="resultado-item" id="res-sin-iva" data-value="${resultadoSinIVA}">
+      💰 <strong>Precio de venta sin IVA:</strong> ${resultadoSinIVA}
+      <span class="hint">(Haz clic para copiar)</span>
+    </div>
+    <div class="resultado-item" id="res-con-iva" data-value="${resultadoConIVA}">
+      🧾 <strong>Precio de venta con IVA:</strong> ${resultadoConIVA}
+      <span class="hint">(Haz clic para copiar)</span>
+    </div>
+  `;
+}
+
+// Redondea al múltiplo más cercano de 100
+function redondear(valor) {
+    return Math.round(valor / 100) * 100;
 }
 
 function resetear() {
-    document.getElementById("resultado").innerHTML = "";
+    document.getElementById("resultado").textContent = "";
 }
+
+// --- Copiar resultados individualmente ---
+document.getElementById("resultado").addEventListener("click", (e) => {
+    const target = e.target.closest(".resultado-item");
+    if (target && target.dataset.value) {
+        const value = target.dataset.value;
+        navigator.clipboard.writeText(value)
+            .then(() => {
+                const originalHTML = target.innerHTML;
+                target.innerHTML = `✅ Copiado: ${value}`;
+                setTimeout(() => {
+                    target.innerHTML = originalHTML;
+                }, 1200);
+            })
+            .catch(err => console.error("Error al copiar: ", err));
+    }
+});
 
 // --- PWA Service Worker ---
 if ("serviceWorker" in navigator) {

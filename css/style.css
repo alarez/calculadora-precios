@@ -101,12 +101,49 @@ button {
 /* Resultado */
 #resultado {
     margin-top: 20px;
+}
+
+.resultado-item {
     background: var(--color-highlight);
     padding: 15px;
     border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid var(--color-secondary);
     text-align: center;
     font-size: 18px;
     font-weight: bold;
-    color: #000;
-    border: 1px solid var(--color-secondary);
+    cursor: pointer;
+    transition: background 0.3s ease;
+    user-select: none;
+}
+
+.resultado-item:hover {
+    background: #FFE58F;
+}
+
+.hint {
+    display: block;
+    font-size: 13px;
+    font-weight: normal;
+    color: #555;
+    margin-top: 4px;
+}
+
+.check-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    font-size: 15px;
+    line-height: 1.4;
+    cursor: pointer;
+    user-select: none;
+}
+
+.check-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+    flex-shrink: 0;
 }
