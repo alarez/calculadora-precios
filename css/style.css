@@ -55,7 +55,6 @@ h2 {
     margin-top: 0;
     margin-bottom: 15px;
     border-bottom: 2px solid var(--color-secondary);
-    display: inline-block;
     padding-bottom: 4px;
 }
 

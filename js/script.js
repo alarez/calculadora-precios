@@ -13,11 +13,9 @@ function calcular() {
         return;
     }
 
-    // Precio base
     const precioSinIVA = precio * (1 + ganancia / 100);
     const precioConIVA = precioSinIVA * (1 + iva / 100);
 
-    // Aplicar redondeo si está activo
     const precioSinIVARed = redondeo ? redondear(precioSinIVA) : precioSinIVA;
     const precioConIVARed = redondeo ? redondear(precioConIVA) : precioConIVA;
 
@@ -37,7 +35,6 @@ function calcular() {
   `;
 }
 
-// --- Función de redondeo ---
 function redondear(valor) {
     return Math.round(valor / 100) * 100;
 }
@@ -63,33 +60,6 @@ document.getElementById("resultado").addEventListener("click", (e) => {
     }
 });
 
-// --- PWA Service Worker ---
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-        navigator.serviceWorker.register("service-worker.js");
-    });
-}
-
-// --- Tabs ---
-const tabGeneral = document.getElementById("tabGeneral");
-const tabUnidades = document.getElementById("tabUnidades");
-
-tabGeneral.addEventListener("click", () => switchTab("general"));
-tabUnidades.addEventListener("click", () => switchTab("unidades"));
-
-function switchTab(tab) {
-    document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
-    document.querySelectorAll(".calc-section").forEach(sec => sec.classList.remove("active"));
-
-    if (tab === "general") {
-        tabGeneral.classList.add("active");
-        document.getElementById("calc-general").classList.add("active");
-    } else {
-        tabUnidades.classList.add("active");
-        document.getElementById("calc-unidades").classList.add("active");
-    }
-}
-
 // --- Calculadora por unidad ---
 document.getElementById("btnCalcularUnidad").addEventListener("click", calcularUnidad);
 document.getElementById("btnResetUnidad").addEventListener("click", () => {
@@ -108,12 +78,10 @@ function calcularUnidad() {
         return;
     }
 
-    // Cálculo base
     const costoUnidad = precio / cantidad;
     let precioSinIVA = costoUnidad * (1 + ganancia / 100);
     let precioConIVA = precioSinIVA * (1 + iva / 100);
 
-    // Aplicar redondeo si está activado
     if (redondeo) {
         precioSinIVA = redondear(precioSinIVA);
         precioConIVA = redondear(precioConIVA);
@@ -133,4 +101,72 @@ function calcularUnidad() {
       <span class="hint">(Haz clic para copiar)</span>
     </div>
   `;
+}
+
+// --- Copiar resultados por unidad ---
+document.getElementById("resultadoUnidad").addEventListener("click", (e) => {
+    const target = e.target.closest(".resultado-item");
+    if (target && target.dataset.value) {
+        const value = target.dataset.value;
+        navigator.clipboard.writeText(value)
+            .then(() => {
+                const originalHTML = target.innerHTML;
+                target.innerHTML = `✅ Copiado: ${value}`;
+                setTimeout(() => {
+                    target.innerHTML = originalHTML;
+                }, 1200);
+            })
+            .catch(err => console.error("Error al copiar: ", err));
+    }
+});
+
+// --- Tabs con URL hash ---
+const tabGeneral = document.getElementById("tabGeneral");
+const tabUnidades = document.getElementById("tabUnidades");
+const titulo = document.querySelector("h1");
+
+tabGeneral.addEventListener("click", () => switchTab("general", true));
+tabUnidades.addEventListener("click", () => switchTab("unidades", true));
+
+// Detectar tab inicial según hash
+window.addEventListener("DOMContentLoaded", () => {
+    const hash = window.location.hash.replace("#", "");
+    if (hash === "unidades") {
+        switchTab("unidades");
+    } else {
+        switchTab("general");
+    }
+});
+
+// Cambiar pestañas y título dinámicamente
+function switchTab(tab, updateHash = false) {
+    document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
+    document.querySelectorAll(".calc-section").forEach(sec => sec.classList.remove("active"));
+
+    if (tab === "general") {
+        tabGeneral.classList.add("active");
+        document.getElementById("calc-general").classList.add("active");
+        titulo.textContent = "Calculadora de Precio de Venta";
+    } else {
+        tabUnidades.classList.add("active");
+        document.getElementById("calc-unidades").classList.add("active");
+        titulo.textContent = "Calculadora de Precio por Unidad";
+    }
+
+    if (updateHash) {
+        history.pushState(null, "", `#${tab}`);
+    }
+}
+
+// Detectar navegación por hash (atrás / adelante)
+window.addEventListener("hashchange", () => {
+    const hash = window.location.hash.replace("#", "");
+    switchTab(hash || "general");
+});
+
+// --- PWA Service Worker ---
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js");
+    });
 }
