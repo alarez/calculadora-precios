@@ -1,9 +1,10 @@
 {
     "name": "Calculadora de Precio de Venta",
-    "short_name": "PrecioVenta",
-    "start_url": "./index.html",
+    "short_name": "CalcPrecio",
+    "description": "Calculadora rápida de precio de venta e individual con IVA y ganancia.",
+    "start_url": "index.html",
     "display": "standalone",
-    "background_color": "#f6f8fa",
+    "background_color": "#ffffff",
     "theme_color": "#0d47a1",
     "icons": [
         {
