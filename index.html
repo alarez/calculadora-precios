@@ -4,53 +4,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Precio de Venta</title>
-
-    <!-- Estilos y PWA -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="manifest" href="manifest.json">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192.png">
-    <link rel="apple-touch-icon" href="icons/icon-512.png">
-    <meta name="theme-color" content="#F4F1DE">
+    <title>Calculadoras VetSmart</title>
+    <link rel="stylesheet" href="css/style.css?v=1.0.4">
+    <script defer src="js/script.js?v=1.0.4"></script>
 </head>
 
 <body>
-    <header class="header" role="banner">
+    <header class="header">
         <img class="logo" src="images/logo-vetsmart.png" alt="Logo VetSmart">
-        <h1>Calculadora de Precio de Venta</h1>
+        <h1>Calculadoras de precio</h1>
     </header>
 
-    <main>
-        <form id="calcForm" aria-label="Formulario de cálculo de precio de venta">
-            <label for="precio">Precio de compra (sin IVA)</label>
-            <input type="number" id="precio" step="0.01" placeholder="Ej. 10000" required>
+    <main id="main-content">
+        <!-- CALCULADORA 1 -->
+        <section id="calc-general" class="calc-section active">
+            <h2>🧮 Precio de Venta</h2>
+            <form id="calcForm">
+                <label for="precio">Precio de compra (sin IVA)</label>
+                <input type="number" id="precio" step="0.01" placeholder="Ej. 10000" required>
 
-            <label for="iva">% de IVA (Costa Rica)</label>
-            <select id="iva">
-                <option value="13">13% (General)</option>
-                <option value="4">4% (Educación / Salud privada)</option>
-                <option value="2">2% (Canasta básica)</option>
-                <option value="1">1% (Medicinas / Agro)</option>
-                <option value="0">0% (Exento)</option>
-            </select>
+                <label for="iva">% de IVA (Costa Rica)</label>
+                <select id="iva">
+                    <option value="13">13% (General)</option>
+                    <option value="4">4% (Educación / Salud privada)</option>
+                    <option value="2">2% (Canasta básica)</option>
+                    <option value="1">1% (Medicinas / Agro)</option>
+                    <option value="0">0% (Exento)</option>
+                </select>
 
-            <label for="ganancia">% de ganancia</label>
-            <input type="number" id="ganancia" step="0.1" placeholder="Ej. 40" required>
-            <label for="redondeo" class="check-label">
-                <input type="checkbox" id="redondeo">
-                Redondear precio final al múltiplo más cercano de 100
-            </label>
+                <label for="ganancia">% de ganancia</label>
+                <input type="number" id="ganancia" step="0.1" placeholder="Ej. 40" required>
 
-            <button type="button" id="btnCalcular">Calcular</button>
-            <button type="reset" id="btnReset">Reset</button>
+                <label class="check-label">
+                    <input type="checkbox" id="redondeo">
+                    Redondear precio final al múltiplo más cercano de 100
+                </label>
 
-            <div id="resultado" aria-live="polite"></div>
-        </form>
+                <button type="button" id="btnCalcular">Calcular</button>
+                <button type="reset" id="btnReset">Reset</button>
+
+                <div id="resultado"></div>
+            </form>
+        </section>
+
+        <!-- CALCULADORA 2 -->
+        <section id="calc-unidades" class="calc-section">
+            <h2>💊 Precio por Unidad</h2>
+            <form id="calcFormUnidad">
+                <label for="precioUnidad">Precio de compra (sin IVA)</label>
+                <input type="number" id="precioUnidad" step="0.01" placeholder="Ej. 12000" required>
+
+                <label for="cantidadUnidad">Cantidad por empaque</label>
+                <input type="number" id="cantidadUnidad" step="1" placeholder="Ej. 60" required>
+
+                <label for="ivaUnidad">% de IVA (Costa Rica)</label>
+                <select id="ivaUnidad">
+                    <option value="13">13% (General)</option>
+                    <option value="4">4% (Educación / Salud privada)</option>
+                    <option value="2">2% (Canasta básica)</option>
+                    <option value="1">1% (Medicinas / Agro)</option>
+                    <option value="0">0% (Exento)</option>
+                </select>
+
+                <label for="gananciaUnidad">% de ganancia</label>
+                <input type="number" id="gananciaUnidad" step="0.1" placeholder="Ej. 40" required>
+
+                <label class="check-label">
+                    <input type="checkbox" id="redondeoUnidad">
+                    Redondear precio final al múltiplo más cercano de 100
+                </label>
+
+                <button type="button" id="btnCalcularUnidad">Calcular</button>
+                <button type="reset" id="btnResetUnidad">Reset</button>
+
+                <div id="resultadoUnidad"></div>
+            </form>
+        </section>
     </main>
 
-    <script src="js/script.js"></script>
+    <!-- MENU INFERIOR -->
+    <nav class="bottom-nav">
+        <button id="tabGeneral" class="tab active">
+            <div class="icon">🧮</div>
+            <span>General</span>
+        </button>
+        <button id="tabUnidades" class="tab">
+            <div class="icon">💊</div>
+            <span>Por Unidad</span>
+        </button>
+    </nav>
+
 </body>
 
 </html>

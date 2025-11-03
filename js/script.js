@@ -68,3 +68,64 @@ if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("service-worker.js");
     });
 }
+
+// --- Tabs ---
+const tabGeneral = document.getElementById("tabGeneral");
+const tabUnidades = document.getElementById("tabUnidades");
+
+tabGeneral.addEventListener("click", () => switchTab("general"));
+tabUnidades.addEventListener("click", () => switchTab("unidades"));
+
+function switchTab(tab) {
+    document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
+    document.querySelectorAll(".calc-section").forEach(sec => sec.classList.remove("active"));
+
+    if (tab === "general") {
+        tabGeneral.classList.add("active");
+        document.getElementById("calc-general").classList.add("active");
+    } else {
+        tabUnidades.classList.add("active");
+        document.getElementById("calc-unidades").classList.add("active");
+    }
+}
+
+// --- Calculadora por unidad ---
+document.getElementById("btnCalcularUnidad").addEventListener("click", calcularUnidad);
+document.getElementById("btnResetUnidad").addEventListener("click", () => {
+    document.getElementById("resultadoUnidad").textContent = "";
+});
+
+function calcularUnidad() {
+    const precio = parseFloat(document.getElementById("precioUnidad").value);
+    const cantidad = parseFloat(document.getElementById("cantidadUnidad").value);
+    const iva = parseFloat(document.getElementById("ivaUnidad").value);
+    const ganancia = parseFloat(document.getElementById("gananciaUnidad").value);
+    const redondeo = document.getElementById("redondeoUnidad").checked;
+
+    if (isNaN(precio) || isNaN(cantidad) || isNaN(ganancia)) {
+        alert("Por favor, completa todos los campos.");
+        return;
+    }
+
+    const costoUnidad = precio / cantidad;
+    const precioSinIVA = costoUnidad * (1 + ganancia / 100);
+    const precioConIVA = precioSinIVA * (1 + iva / 100);
+
+    const finalSinIVA = redondeo ? redondear(precioSinIVA) : precioSinIVA;
+    const finalConIVA = redondeo ? redondear(precioConIVA) : precioConIVA;
+
+    const resultadoSinIVA = `₡${finalSinIVA.toFixed(2)}`;
+    const resultadoConIVA = `₡${finalConIVA.toFixed(2)}`;
+
+    const resultBox = document.getElementById("resultadoUnidad");
+    resultBox.innerHTML = `
+    <div class="resultado-item" id="res-sin-iva-u" data-value="${resultadoSinIVA}">
+      💰 <strong>Precio por unidad sin IVA:</strong> ${resultadoSinIVA}
+      <span class="hint">(Haz clic para copiar)</span>
+    </div>
+    <div class="resultado-item" id="res-con-iva-u" data-value="${resultadoConIVA}">
+      🧾 <strong>Precio por unidad con IVA:</strong> ${resultadoConIVA}
+      <span class="hint">(Haz clic para copiar)</span>
+    </div>
+  `;
+}

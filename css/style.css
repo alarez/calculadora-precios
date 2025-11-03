@@ -39,7 +39,24 @@ body {
 }
 
 h1 {
-    font-size: 1.5em;
+    font-size: 1.6rem;
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--color-text);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+h2 {
+    font-size: 1.25rem;
+    text-align: center;
+    color: var(--color-secondary);
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--color-secondary);
+    display: inline-block;
+    padding-bottom: 4px;
 }
 
 /* Formulario */
@@ -70,31 +87,38 @@ button {
     font-size: 16px;
 }
 
-/* Botones */
+/* --- Botones generales (ambas calculadoras) --- */
 button {
     margin-top: 15px;
     color: white;
     cursor: pointer;
     font-weight: bold;
     border: none;
+    border-radius: 8px;
     transition: background 0.2s ease;
+    font-size: 16px;
+    padding: 10px;
 }
 
-/* Calcular */
-#btnCalcular {
+/* Botones Calcular */
+#btnCalcular,
+#btnCalcularUnidad {
     background: var(--color-accent);
 }
 
-#btnCalcular:hover {
+#btnCalcular:hover,
+#btnCalcularUnidad:hover {
     background: var(--color-accent-dark);
 }
 
-/* Reset */
-#btnReset {
+/* Botones Reset */
+#btnReset,
+#btnResetUnidad {
     background: var(--color-reset);
 }
 
-#btnReset:hover {
+#btnReset:hover,
+#btnResetUnidad:hover {
     background: var(--color-reset-dark);
 }
 
@@ -146,4 +170,84 @@ button {
     accent-color: var(--color-accent);
     cursor: pointer;
     flex-shrink: 0;
+}
+
+/* Secciones */
+.calc-section {
+    display: none;
+}
+
+.calc-section.active {
+    display: block;
+}
+
+/* --- Menú inferior tipo app --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #F4F1DE;
+    border-top: 2px solid #E0DCCB;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.tab {
+    background: none;
+    border: none;
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--color-text);
+    transition: all 0.2s ease;
+    padding: 5px 0;
+    font-size: 14px;
+}
+
+.tab .icon {
+    font-size: 22px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.tab span {
+    display: block;
+    font-size: 13px;
+}
+
+.tab.active {
+    color: var(--color-accent-dark);
+    font-weight: bold;
+}
+
+.tab.active .icon {
+    transform: scale(1.15);
+    color: var(--color-accent);
+}
+
+main {
+    padding-bottom: 90px;
+    /* espacio para el menú inferior */
+}
+
+.tab.active {
+    position: relative;
+}
+
+.tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: var(--color-accent);
 }
