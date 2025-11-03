@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Precio de Venta</title>
+
+    <!-- Estilos y PWA -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/icon-512.png">
+    <meta name="theme-color" content="#0d47a1">
+</head>
+
+<body>
+
+    <h1>Calculadora de Precio de Venta</h1>
+
+    <form id="calcForm">
+        <label for="precio">Precio de compra (sin IVA)</label>
+        <input type="number" id="precio" step="0.01" placeholder="Ej. 10000" required>
+
+        <label for="iva">% de IVA (Costa Rica)</label>
+        <select id="iva">
+            <option value="13">13% (General)</option>
+            <option value="4">4% (Educación / Salud privada)</option>
+            <option value="2">2% (Canasta básica)</option>
+            <option value="1">1% (Medicinas / Agro)</option>
+            <option value="0">0% (Exento)</option>
+        </select>
+
+        <label for="ganancia">% de ganancia</label>
+        <input type="number" id="ganancia" step="0.1" placeholder="Ej. 40" required>
+
+        <button type="button" id="btnCalcular">Calcular</button>
+        <button type="reset" id="btnReset">Reset</button>
+
+        <div id="resultado"></div>
+    </form>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
