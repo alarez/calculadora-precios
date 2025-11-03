@@ -34,8 +34,10 @@ pwa-calculadora/
 ├── /js/
 │   └── script.js
 │
-├── icon-192.png
-└── icon-512.png
+├── /icons/
+│   └── icon-192.png
+│   └── icon-512.png
+│   └── icon-1024.png
 ```
 
 ---
