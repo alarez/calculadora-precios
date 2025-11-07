@@ -13,14 +13,23 @@ function calcular() {
         return;
     }
 
+    // 1️⃣ Calcular precio sin IVA con ganancia
     const precioSinIVA = precio * (1 + ganancia / 100);
-    const precioConIVA = precioSinIVA * (1 + iva / 100);
 
-    const precioSinIVARed = redondeo ? redondear(precioSinIVA) : precioSinIVA;
-    const precioConIVARed = redondeo ? redondear(precioConIVA) : precioConIVA;
+    // 2️⃣ Calcular precio con IVA
+    let precioConIVA = precioSinIVA * (1 + iva / 100);
 
-    const resultadoSinIVA = `₡${precioSinIVARed.toFixed(2)}`;
-    const resultadoConIVA = `₡${precioConIVARed.toFixed(2)}`;
+    // 3️⃣ Redondear solo el precio con IVA (hacia arriba al múltiplo de 50)
+    if (redondeo) {
+        precioConIVA = Math.ceil(precioConIVA / 50) * 50;
+    }
+
+    // 4️⃣ Recalcular el precio sin IVA a partir del redondeado
+    const precioSinIVARecalc = precioConIVA / (1 + iva / 100);
+
+    // 5️⃣ Mostrar resultados con 3 decimales
+    const resultadoSinIVA = `₡${precioSinIVARecalc.toFixed(3)}`;
+    const resultadoConIVA = `₡${precioConIVA.toFixed(3)}`;
 
     const resultBox = document.getElementById("resultado");
     resultBox.innerHTML = `
@@ -33,10 +42,6 @@ function calcular() {
       <span class="hint">(Haz clic para copiar)</span>
     </div>
   `;
-}
-
-function redondear(valor) {
-    return Math.round(valor / 100) * 100;
 }
 
 function resetear() {
@@ -78,17 +83,26 @@ function calcularUnidad() {
         return;
     }
 
+    // 1️⃣ Costo por unidad sin IVA
     const costoUnidad = precio / cantidad;
+
+    // 2️⃣ Aplicar ganancia
     let precioSinIVA = costoUnidad * (1 + ganancia / 100);
+
+    // 3️⃣ Calcular precio con IVA
     let precioConIVA = precioSinIVA * (1 + iva / 100);
 
+    // 4️⃣ Redondear solo el precio con IVA
     if (redondeo) {
-        precioSinIVA = redondear(precioSinIVA);
-        precioConIVA = redondear(precioConIVA);
+        precioConIVA = Math.ceil(precioConIVA / 50) * 50;
     }
 
-    const resultadoSinIVA = `₡${precioSinIVA.toFixed(2)}`;
-    const resultadoConIVA = `₡${precioConIVA.toFixed(2)}`;
+    // 5️⃣ Recalcular sin IVA desde el valor redondeado
+    precioSinIVA = precioConIVA / (1 + iva / 100);
+
+    // 6️⃣ Mostrar resultados con 3 decimales
+    const resultadoSinIVA = `₡${precioSinIVA.toFixed(3)}`;
+    const resultadoConIVA = `₡${precioConIVA.toFixed(3)}`;
 
     const resultBox = document.getElementById("resultadoUnidad");
     resultBox.innerHTML = `
